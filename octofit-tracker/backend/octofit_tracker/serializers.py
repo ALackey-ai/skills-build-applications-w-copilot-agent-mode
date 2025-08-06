@@ -25,12 +25,22 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ActivitySerializer(serializers.ModelSerializer):
-    _id = ObjectIdField()
-    user = ObjectIdField()
+    _id = ObjectIdField(required=False)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model = Activity
         fields = '__all__'
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        # Ensure _id is always a string
+        if '_id' in rep and rep['_id']:
+            rep['_id'] = str(rep['_id'])
+        # Ensure user is always a string
+        if 'user' in rep and rep['user']:
+            rep['user'] = str(rep['user'])
+        return rep
 
 class LeaderboardSerializer(serializers.ModelSerializer):
     _id = ObjectIdField()

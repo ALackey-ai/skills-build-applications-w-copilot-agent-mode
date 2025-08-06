@@ -29,6 +29,22 @@ class TeamViewSet(viewsets.ModelViewSet):
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
+    lookup_field = '_id'
+    lookup_value_regex = '[0-9a-fA-F]{24}'
+
+    def get_object(self):
+        from bson import ObjectId
+        queryset = self.filter_queryset(self.get_queryset())
+        obj_id = self.kwargs.get(self.lookup_field)
+        try:
+            obj_id = ObjectId(obj_id)
+        except Exception:
+            raise Http404
+        obj = queryset.filter(_id=obj_id).first()
+        if obj is None:
+            raise Http404
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 class LeaderboardViewSet(viewsets.ModelViewSet):
     queryset = Leaderboard.objects.all()

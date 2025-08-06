@@ -1,7 +1,7 @@
 
 
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import Activities from './components/Activities';
 import Leaderboard from './components/Leaderboard';
 import Teams from './components/Teams';
@@ -10,7 +10,7 @@ import Workouts from './components/Workouts';
 
 function App() {
   return (
-    <Router>
+    <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div className="container-fluid">
           <Link className="navbar-brand d-flex align-items-center" to="/">
@@ -54,7 +54,7 @@ function App() {
           } />
         </Routes>
       </div>
-    </Router>
+    </>
   );
 }
 
